@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Edit Remove HTML Table Row</title>
+    <meta charset="windows-1252">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        .container {
+            overflow: hidden
+        }
+
+        .tab {
+            float: left;
+        }
+
+        .tab-2 {
+            margin-left: 50px
+        }
+
+        .tab-2 input {
+            display: block;
+            margin-bottom: 10px
+        }
+
+        tr {
+            transition: all .25s ease-in-out
+        }
+
+        tr:hover {
+            background-color: #EEE;
+            cursor: pointer
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="tab tab-1">
+            <table id="table" border="1">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                </tr>
+                <tbody id="tableData">
+
+                </tbody>
+            </table>
+        </div>
+        <div class="tab tab-2">
+            First Name :<input type="text" name="fname" id="fname">
+            Last Name :<input type="text" name="lname" id="lname">
+            Age :<input type="number" name="age" id="age">
+            <div id="btnContainer">
+                <button onclick="addHtmlTableRow();">Add</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        var rIndex,
+            table = document.getElementById("tableData");
+
+        var data = [{ fname: 'a', lname: 'b', age: 20 },
+        { fname: 'acxz', lname: 'dsab', age: 2320 },
+        { fname: 'a', lname: 'dsab', age: 23 },
+        { fname: 'acxz', lname: 'dsab', age: 2320 },
+        { fname: 'acxz', lname: 'dsab', age: 2320 },
+        { fname: 'acxz', lname: 'dsab', age: 2320 }];
+
+        function showData() {
+            let html = ''
+            data.map((item, i) => {
+                html += `<tr>
+                    <td>${item.fname}</td>
+                    <td>${item.lname}</td>
+                    <td>${item.age}</td>
+                    <td> <button onClick="selectRow(${i})">Edit</button> <button onClick="removeRow(${i})">Remove</button></td>
+                    
+                    </tr>`
+
+            })
+            table.innerHTML = html
+        }
+        showData()
+
+        // check the empty input
+        function checkEmptyInput() {
+            var isEmpty = false,
+                fname = document.getElementById("fname").value
+            lname = document.getElementById("lname").value
+            age = document.getElementById("age").value
+
+            if (fname === "") {
+                alert("First Name Connot Be Empty")
+                isEmpty = true
+            }
+            else if (lname === "") {
+                alert("Last Name Connot Be Empty")
+                isEmpty = true
+            }
+            else if (age === "") {
+                alert("Age Connot Be Empty")
+                isEmpty = true
+            }
+            return isEmpty
+        }
+
+        // add Row
+        function addHtmlTableRow() {
+            if (!checkEmptyInput()) {
+                fname = document.getElementById("fname").value,
+                    lname = document.getElementById("lname").value,
+                    age = document.getElementById("age").value;
+
+
+                data.push({ fname, lname, age })
+                showData()
+
+            }
+        }
+
+        // display selected row data into input text
+        function selectRow(index) {
+
+            rIndex = index;
+            let fname = data[index].fname
+            let lname = data[index].lname
+            let age = data[index].age
+            document.getElementById("fname").value = fname
+            document.getElementById("lname").value = lname
+            document.getElementById("age").value = age
+            let btnCon = document.getElementById('btnContainer')
+            btnCon.innerHTML = `<button onclick="editRow();">Edit</button>`
+
+        }
+
+        function editRow() {
+            var fname = document.getElementById("fname").value,
+                lname = document.getElementById("lname").value,
+                age = document.getElementById("age").value;
+            if (!checkEmptyInput()) {
+                data[rIndex] = { fname, lname, age }
+                document.getElementById("fname").value = ''
+                document.getElementById("lname").value = ''
+                document.getElementById("age").value = ''
+                rIndex = null
+                let btnCon = document.getElementById('btnContainer')
+                btnCon.innerHTML = `<button onclick="addHtmlTableRow();">Add</button>`
+                showData()
+            }
+        }
+
+        function removeRow(index) {
+
+            data.splice(index,1)
+            showData()
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
